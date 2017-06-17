@@ -74,7 +74,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @post. true is returned iff state is an end state.  
 	 */
     public boolean end(PhatagonState state){
-        return ( ((state.getWhites()) == 0) || someOneWins(state) || ((state.getBlacks()) == 0) );
+        return ((((state.getWhites()) == 0) && ((state.getBlacks()) == 0)) || someOneWins(state));
     }
 
 	/** 
