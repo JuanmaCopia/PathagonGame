@@ -74,9 +74,9 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @post. true is returned iff state is an end state.  
 	 */
     public boolean end(PhatagonState state){
-        return ( ((state.getBlancas()) == 0) || someOneWins(state) || ((state.getNegras()) == 0) );
+        return ( ((state.getWhites()) == 0) || someOneWins(state) || ((state.getBlacks()) == 0) );
     }
-      
+
 	/** 
 	 * Computes the value of a given state. If the state is a leaf
 	 * (end state), then this value is an exact value, and indicates
