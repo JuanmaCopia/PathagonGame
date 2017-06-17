@@ -15,7 +15,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @pre. true.
 	 * @post. the initial state for the problem is returned.  
 	 */
-    public S initialState() {
+    public PathagonState initialState() {
     	return initial;
     }
     
@@ -31,51 +31,51 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @pre. state!=null.
 	 * @post. the list of successor states of state is returned.  
 	 */
-    public List<S> getSuccessors(S parent) {
-    	List<S> successors = new ArrayList<PathagonState>();
-    	PathagonState child = pathagonStateClone(parent);
-    	// si no posee fichas para jugar retorno el mismo estado
-    	if (child.isMax()) {
-    		if (child.getBlacks() == 0) {
-    			successors.add(child);
-    			return successors;
-    		}
+  public List<PathagonState> getSuccessors(PathagonState parent) {
+    List<PathagonState> successors = new ArrayList<PathagonState>();
+    PathagonState child = parent.pathagonStateChild();
+    // si no posee fichas para jugar retorno el mismo estado
+    if (child.isMax()) {
+    	if (child.getBlacks() == 0) {
+    		successors.add(child);
+    		return successors;
     	}
-    	else {
-    		if (child.getWhites() == 0) {
-    			successors.add(child);
-    			return successors;
-    		}	
-    	}
-    	// si tiene fichas...
-    	for (int i= 0; i<6 ; i++) {
-    		for (int j = 0; j<6 ; j++) {
-    			if (child.emptySquare(i,j)) {
-    				if (!child.blockedSquare(i,j)) {
-    					child.putPieceIn(i,j);
-    					successors.add(child);
-    				}
-    				else {
-    					child.unblockSquare(i,j);
-    				}
+    }
+    else {
+    	if (child.getWhites() == 0) {
+    		successors.add(child);
+    		return successors;
+    	}	
+    }
+    // si tiene fichas...
+    for (int i= 0; i<6 ; i++) {
+    	for (int j = 0; j<6 ; j++) {
+    		if (child.emptySquare(i,j)) {
+    			if (!child.blockedSquare(i,j)) {
+    				child.putPieceIn(i,j);
+    				successors.add(child);
+    			}
+    			else {
+    				child.unblockSquare(i,j);
     			}
     		}
     	}
-    	return successors;
     }
+    return successors;
+  }
      
 
-/** 
-	 * Indicates whether a given state is an end state, i.e., a 
-	 * state with no successors. 
-	 * @param state is the state being checked to be an end state.
-	 * @return true iff state is an end state.
-	 * @pre. state!=null.
-	 * @post. true is returned iff state is an end state.  
-	 */
-    public boolean end(PhatagonState state){
-        return ((((state.getWhites()) == 0) && ((state.getBlacks()) == 0)) || someOneWins(state));
-    }
+	/** 
+ 	* Indicates whether a given state is an end state, i.e., a 
+ 	* state with no successors. 
+ 	* @param state is the state being checked to be an end state.
+ 	* @return true iff state is an end state.
+ 	* @pre. state!=null.
+ 	* @post. true is returned iff state is an end state.  
+ 	*/
+  public boolean end(PathagonState state){
+    return ((((state.getWhites()) == 0) && ((state.getBlacks()) == 0)) || (state.blackWins() || state.whiteWins()));
+  }
 
 	/** 
 	 * Computes the value of a given state. If the state is a leaf
@@ -90,7 +90,9 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @pre. state!=null.
 	 * @post. an integer value, representing the value of the state.   
 	 */
-    abstract public int value(S state);
+    public int value(PathagonState state) {
+    	return 4;
+    }
  
     /** 
 	 * Indicates the least possible value for a state in the problem.
@@ -103,7 +105,9 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @post. an integer value, representing the least possible value
 	 * for states, is returned. 
 	 */
-    abstract public int minValue();
+    public int minValue() {
+    	return 3;
+    }
     
     /** 
 	 * Indicates the greatest possible value for a state in the problem.
@@ -116,7 +120,9 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @post. an integer value, representing the greatest possible value
 	 * for states, is returned. 
 	 */
-    abstract public int maxValue();
+    public int maxValue() {
+    	return 3;
+    }
 
 
 }
