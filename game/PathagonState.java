@@ -182,6 +182,17 @@ public class PathagonState implements AdversarySearchState {
 
 
 	/**
+	 * @pre. this != null
+	 * @param. i,j: Piece position, param: value of original board on [i][j] position
+	 * @pos. board of copy updated.
+	 */	
+	public void setBoard(int i, int i, int param){
+		this.board[i][j] = param;
+	}
+
+
+	
+	/**
 	 * @pre. 
 	 *	@param 
 	 *	@pos. True si existe un camino del jugador blanco que conecta sus 2 extremos del tablero, false caso contrario
