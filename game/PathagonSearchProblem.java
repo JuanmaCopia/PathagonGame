@@ -65,7 +65,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
     }
      
 
-	/** 
+/** 
 	 * Indicates whether a given state is an end state, i.e., a 
 	 * state with no successors. 
 	 * @param state is the state being checked to be an end state.
@@ -73,8 +73,10 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * @pre. state!=null.
 	 * @post. true is returned iff state is an end state.  
 	 */
-    abstract public boolean end(S state);
-
+    public boolean end(PhatagonState state){
+        return ( ((state.getBlancas()) == 0) || someOneWins(state) || ((state.getNegras()) == 0) );
+    }
+      
 	/** 
 	 * Computes the value of a given state. If the state is a leaf
 	 * (end state), then this value is an exact value, and indicates
