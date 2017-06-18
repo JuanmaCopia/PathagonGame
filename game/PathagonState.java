@@ -29,22 +29,43 @@ public class PathagonState implements AdversarySearchState {
    	*/	
 	public PathagonState pathagonStateChild(){
 		PathagonState copy = new PathagonState();
-		copy.whites = parent.whites;
-		copy.blacks = parent.blacks;
-		copy.parent = parent;
-		copy.max = !parent.max;
-		copy.whitePiece = parent.whitePiece;
-		copy.blackPiece = parent.blackPiece;
+		copy.whites = this.whites;
+		copy.blacks = this.blacks;
+		copy.parent = this;
+		copy.max = !this.max;
+		copy.whitePiece = this.whitePiece;
+		copy.blackPiece = this.blackPiece;
 
 		for(int i=0; i<7; i++){
 			for(int j=0; j<7 ;j++){
-				copy.board [i][j] = parent.board[i][j];
+				copy.board [i][j] = this.board[i][j];
 			}
 		}
 		return copy;
 	}
 
 
+	/**
+   	* @pre. this != null
+   	* @param. a State
+   	* @pos. 
+   	*/	
+	public PathagonState pathagonStateClone(){
+		PathagonState copy = new PathagonState();
+		copy.whites = this.whites;
+		copy.blacks = this.blacks;
+		copy.parent = this.parent;
+		copy.max = this.max;
+		copy.whitePiece = this.whitePiece;
+		copy.blackPiece = this.blackPiece;
+
+		for(int i=0; i<7; i++){
+			for(int j=0; j<7 ;j++){
+				copy.board [i][j] = this.board[i][j];
+			}
+		}
+		return copy;
+	}
 
 	
 	/**
@@ -67,7 +88,7 @@ public class PathagonState implements AdversarySearchState {
   	// pongo la ficha 
   	board [i][j] = myPiece;
   	// chequeos verticales hacia arriba
-  	if (i-1 != 0) {
+  	if (i-1 > 0) {
   		if (board[i-1][j] == adversaryPiece) {
   			if (board[i-2][j] == myPiece) {
   				board [i-1] [j] = -1;
@@ -79,9 +100,9 @@ public class PathagonState implements AdversarySearchState {
   		}
   	}
   	// chequeo vertical hacia abajo
-  	if (i+1 != 6) {
-  		if (board[i-1][j] == adversaryPiece) {
-  			if (board[i-2][j] == myPiece) {
+  	if (i+1 < 6) {
+  		if (board[i+1][j] == adversaryPiece) {
+  			if (board[i+2][j] == myPiece) {
   				board [i+1] [j] = -1;
   				if (max)
   					whites++;
@@ -91,7 +112,7 @@ public class PathagonState implements AdversarySearchState {
   		}
   	}
   	// chequeo horizontal hacia la izquierda
-  	if (j-1 != 0) {
+  	if (j-1 > 0) {
   		if (board[i][j-1] == adversaryPiece) {
   			if (board[i][j-2] == myPiece) {
   				board [i] [j-1] = -1;
@@ -103,7 +124,7 @@ public class PathagonState implements AdversarySearchState {
   		}
   	}
   	// chequeo horizontal hacia la derecha
-  	if (j+1 != 6) {
+  	if (j+1 < 6) {
   		if (board[i][j+1] == adversaryPiece) {
   			if (board[i][j+2] == myPiece) {
   				board [i] [j+1] = -1;
@@ -163,6 +184,44 @@ public class PathagonState implements AdversarySearchState {
 	}
 
 	/**
+	 * @pre. this != null
+	 * @param. a State
+	 * @pos. numer of negras
+	 */	
+	public PathagonState getParent(){
+	  return this.parent;
+	}
+
+	/**
+	 * @pre. this != null
+	 * @param. a State
+	 * @pos. numer of negras
+	 */	
+	public void setParent(PathagonState parent){
+	  this.parent = parent;
+	}
+
+
+	/**
+	 * @pre. this != null
+	 * @param. a State
+	 * @pos. numer of negras
+	 */	
+	public void setMax(boolean max){
+	  this.max = max;
+	}
+
+
+	/**
+	 * @pre. this != null
+	 * @param. a State
+	 * @pos. numer of negras
+	 */	
+	public boolean getMax(){
+	  return this.max;
+	}
+
+	/**
 	 * @pre. true
 	 * @param. numer of white pieces
 	 * @pos. number of wihite pieces updated
@@ -186,12 +245,47 @@ public class PathagonState implements AdversarySearchState {
 	 * @param. i,j: Piece position, param: value of original board on [i][j] position
 	 * @pos. board of copy updated.
 	 */	
-	public void setBoard(int i, int i, int param){
+	public void setBoard(int i, int j, int param){
 		this.board[i][j] = param;
 	}
 
-
+	/**
+	 * @pre. this != null
+	 * @param. 
+	 * @pos. 
+	 */	
+	public int getBoard(int i, int j){
+		return this.board[i][j];
+	}
 	
+
+
+	/**
+	 * @pre. this != null
+	 * @param. 
+	 * @pos. 
+	 */	
+	public int getBlackPiece(){
+		return this.blackPiece;
+	}
+
+	/**
+	 * @pre. this != null
+	 * @param. 
+	 * @pos.
+	 * @return. la posicion de la ficha negra mas cercana al lado izquierdo del tablero  
+	 */	
+	public Pair<Integer,Integer> foundFirstBlackPiece() {
+		for (int j= 0; j<7 ; j++) {
+	    	for (int i = 0; i<7 ; i++) {
+	    		if (board[i][j] == blackPiece) {
+	    			return new Pair<Integer,Integer>(i,j);
+	    		}
+	    	}
+	    }
+	    return null;
+	}
+
 	/**
 	 * @pre. 
 	 *	@param 
@@ -329,40 +423,65 @@ public class PathagonState implements AdversarySearchState {
 	*	@pos. true sii this equals S
 	*/
 	/*
-	public String toString(){
-		for(int i=0; i<7; i++) {
-			for(int j=0; j<7; j++){
-				if(j<=5){
-					System.out.print((this.board [i][j]) + "-");
-				}
-				else{
-					System.out.print(this.board [i][j]);
-				}
-			}
-		}
-		System.out.println("");
+	public String toString() {
+
+    	String str = "";
+
+    	for (int i = 0 ; i<7 ; i ++ ){
+    	    for (int j = 0 ; j < 7 ; j++){
+    	        str += board[i][j]+"\t";
+    	    }
+    	    str += "\n";
+    	}
+   		return str;
 	}
 	
 	*/
+
+	public String toString() {
+    String separator = ", ";
+    StringBuffer result = new StringBuffer();
+
+    // iterate over the first dimension
+    for (int i = 0; i < 7; i++) {
+        // iterate over the second dimension
+        for(int j = 0; j < 7; j++){
+            result.append(board[i][j]);
+            result.append(separator);
+        }
+        // remove the last separator
+        result.setLength(result.length() - separator.length());
+        // add a line break.
+        result.append("\n");
+    }
+    return result.toString();
+	}
 
 	public Object ruleApplied() {
 		return new Object();
 	}
 
-
+/*
 	public static void main(String[] args) {
 
 		PathagonState state = new PathagonState();
 
-		state.board[0][3] = state.whitePiece;
-		state.board[1][3] = state.whitePiece;
-		state.board[2][3] = state.whitePiece;
-		state.board[3][3] = state.whitePiece;
-		state.board[3][4] = state.whitePiece;
-		state.board[4][4] = state.whitePiece;
-		state.board[5][4] = state.whitePiece;
-		state.board[5][3] = state.whitePiece;
-		state.board[6][3] = state.whitePiece;
+		state.board[0][6] = state.whitePiece;
+		state.board[1][6] = state.whitePiece;
+		state.board[2][6] = state.whitePiece;
+		state.board[3][6] = state.whitePiece;
+		state.board[4][6] = state.whitePiece;
+		state.board[5][6] = state.whitePiece;
+		state.board[6][6] = state.whitePiece;
+
+
+
+		state.board[1][0] = state.blackPiece;
+		state.board[1][1] = state.blackPiece;
+		state.board[1][2] = state.blackPiece;
+		state.board[2][2] = state.blackPiece;
+		state.board[2][3] = state.blackPiece;
+		state.board[2][4] = state.blackPiece;
 
 		if (state.whiteWins()) {
 			System.out.println("El jugador blanco gano");
@@ -371,6 +490,14 @@ public class PathagonState implements AdversarySearchState {
 			System.out.println("NO GANO BLANCO TODAVIA");
 		}
 
+		System.out.println("-------------------------------------------------");
+		System.out.println("-------------------------------------------------");
+		PathagonSearchProblem p = new PathagonSearchProblem();
+		System.out.println("");
+		System.out.println("El valor de este estado es: "+p.value(state)+" Deberia ser 5");
+		System.out.println("");
+		System.out.println("-------------------------------------------------");
+		System.out.println("-------------------------------------------------");
 
 		PathagonState state2 = new PathagonState();
 
@@ -390,9 +517,17 @@ public class PathagonState implements AdversarySearchState {
 		else {
 			System.out.println("NO GANO NEGRO TODAVIA");
 		}
+
+		System.out.println("-------------------------------------------------");
+		System.out.println("-------------------------------------------------");
+		System.out.println("");
+		System.out.println("El valor de este estado es: "+p.value(state2)+" Deberia ser 7");
+		System.out.println("");
+		System.out.println("-------------------------------------------------");
+		System.out.println("-------------------------------------------------");
 	
 	}
 
 
-
+*/
 }
