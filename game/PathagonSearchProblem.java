@@ -60,16 +60,10 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
     PathagonState childAux;
     for (int i= 0; i<7 ; i++) {
     	for (int j = 0; j<7 ; j++) {
-    		if (child.emptySquare(i,j)) {
-    			if (!child.blockedSquare(i,j)) {
-    				childAux = child.pathagonStateClone();
-    				childAux.putPieceIn(i,j);
-    				childAux.setMax(!childAux.getMax());
-    				successors.add(childAux);
-    			}
-    			else {
-    				child.unblockSquare(i,j);
-    			}
+    		if (child.emptySquare(i,j) && (!child.blockedSquare(i,j))) {
+    			childAux = child.pathagonStateClone();
+    			childAux.putPieceIn(i,j);
+    			successors.add(childAux);
     		}
     	}
     }
@@ -180,7 +174,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * for states, is returned. 
 	 */
     public int minValue() {
-    	return -30;
+    	return 1;
     }
     
     /** 
@@ -195,7 +189,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	 * for states, is returned. 
 	 */
     public int maxValue() {
-    	return 900;
+    	return 8;
     }
 
 

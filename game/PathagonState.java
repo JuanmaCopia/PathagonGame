@@ -68,6 +68,19 @@ public class PathagonState implements AdversarySearchState {
 	}
 
 	
+	public void unblockAllSquares() {
+		for (int i= 0; i<7 ; i++) {
+			for (int j = 0; j<7 ; j++) {
+			    if (this.blockedSquare(i,j)) {
+			    	this.unblockSquare(i,j);
+			    }
+			}
+		}
+	}
+
+
+
+
 	/**
 	 * @pre. this != null
 	 * @param. indices de la casilla
@@ -87,6 +100,8 @@ public class PathagonState implements AdversarySearchState {
   	}
   	// pongo la ficha 
   	board [i][j] = myPiece;
+  	unblockAllSquares();
+  	this.max = !this.max;
   	// chequeos verticales hacia arriba
   	if (i-1 > 0) {
   		if (board[i-1][j] == adversaryPiece) {
@@ -439,8 +454,11 @@ public class PathagonState implements AdversarySearchState {
 	*/
 
 	public String toString() {
+
+
     String separator = ", ";
     StringBuffer result = new StringBuffer();
+    result.append("\n");
 
     // iterate over the first dimension
     for (int i = 0; i < 7; i++) {
@@ -452,8 +470,15 @@ public class PathagonState implements AdversarySearchState {
         // remove the last separator
         result.setLength(result.length() - separator.length());
         // add a line break.
-        result.append("\n");
+        result.append("\n");  
     }
+    result.append("\n");
+    result.append("CANTIDAD DE FICHAS BLANCAS: "+this.whites);
+    result.append("\n");
+    result.append("CANTIDAD DE FICHAS NEGRAS: "+this.blacks);
+    result.append("\n");
+    result.append("\n");
+    result.append("------------------------------------------------------------------------------");
     return result.toString();
 	}
 
