@@ -1,76 +1,76 @@
-
 import java.util.*;
 
-
 public class Main {
-	
-
-
 	public static void main(String[] args) {
-		PathagonGame game = new PathagonGame(0);
-		game.startGame();
-	}
-}		
-
-
-
-
-
-/*
-		PathagonState state = new PathagonState();
-		PathagonSearchProblem p = new PathagonSearchProblem();
-		MinMaxAlphaBetaEngine<PathagonSearchProblem,PathagonState> engine = new MinMaxAlphaBetaEngine<PathagonSearchProblem,PathagonState>(p,4);
-		int a,b;
-		Scanner entrada = new Scanner(System.in);
-
-		System.out.println("ESTADO INICIAL:");
-		System.out.println(state.toString());
-		while (!p.end(state)) {
-			if (state.isMax()) {					
-				state = engine.computeSuccessor(state);
-				System.out.println("MOVIO NEGRAS:");
-				System.out.println(state.toString());
-
-			}
-			else {
-				
-				PathagonState child = state.pathagonStateClone();
-				if (child.getWhites() != 0) {
-					System.out.println("SU TURNO: ");
-					System.out.println("");
-					System.out.print("fila: ");
-					a = entrada.nextInt();
-					System.out.print("columna: ");
-					b = entrada.nextInt();
-					System.out.println("");
-					System.out.println("");
-					System.out.println("MOVISTE:");
-
-					child.putPieceIn(a,b);
+        Scanner entrada = new Scanner(System.in);
+        int opcion,aux;
+        boolean continuar=true;
+        do {
+        	System.out.print("\033[H\033[2J");
+			System.out.flush();
+        	System.out.println("--------------------------------------------------------------------------------");
+        	System.out.println("                        	  PATHAGON");
+        	System.out.println("--------------------------------------------------------------------------------");
+        	System.out.println("");
+        	System.out.println("");
+        	System.out.println("");
+        	System.out.println("Ingrese la opcion deseada: ");
+        	System.out.println("");
+        	System.out.println("1 - Jugar partida");
+        	System.out.println("");
+        	System.out.println("2 - Salir");
+        	System.out.println("");
+        	System.out.print("Opcion:  ");
+        	opcion = entrada.nextInt();
+        	while (opcion<1 || opcion>2){
+        		System.out.println("El numero de opcion elegido no es valido. Ingrese nuevamente...");
+        		opcion = entrada.nextInt();
+        	}
+        	if (opcion==1){
+        		System.out.print("\033[H\033[2J");
+				System.out.flush();
+        		System.out.println("Ingrese la opcion que prefiera, para saber quien realizara el primer movimiento: ");
+        		System.out.println("");
+        		System.out.println("1 - Usuario.");
+        		System.out.println("2 - Ordenador.");
+        		System.out.println("");
+        		System.out.println("3 - Volver al menu.");
+        		System.out.println("");
+        		System.out.print("Opcion:  ");
+        		opcion = entrada.nextInt();
+        		while (opcion<1 || opcion>3){
+        			System.out.println("El numero de opcion elegido no es valido. Ingrese nuevamente...");
+        			opcion = entrada.nextInt();
+        		}
+        		if (opcion==1){
+        			System.out.print("\033[H\033[2J");
+					System.out.flush();
+        			PathagonGame game = new PathagonGame(1);
+					game.startGame();
+					System.out.print("");
+					System.out.print("Ingrese cualquier numero para continuar...");
+					aux=entrada.nextInt();
 				}
-				else {
-					System.out.println("No tienes fichas");
-				}
+				if (opcion==2){
+        			System.out.print("\033[H\033[2J");
+					System.out.flush();
+					PathagonGame game = new PathagonGame(0);
+					game.startGame();
+					System.out.print("");
+					System.out.print("Ingrese cualquier numero para continuar...");
+					aux=entrada.nextInt();
+				}				
+        	}
+        	else{
+        		continuar=false;
+        	}
+        }while(continuar==true);
+        entrada.close();
+        System.out.print("\033[H\033[2J");
+		System.out.flush();
+    }
 
-				System.out.println(child.toString());
-				state = child;
-			}
-		}
-
-		System.out.println("Juego finalizado");
-		System.out.println("");
-		if (state.blackWins()) {
-			System.out.println("NEGRAS HA GANADO");
-		}
-		else {
-			if (state.whiteWins()) {
-				System.out.println("BLANCAS HA GANADO");
-			}
-			else {
-				System.out.println("EMPATE");
-			}
-		}
+}
 		
 
 
-	*/
