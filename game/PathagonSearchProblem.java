@@ -88,7 +88,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	* @pre. state!=null.
 	* @post. an integer value, representing the value of the state.   
 	*/
-  public int value(PathagonState state) {
+public int value(PathagonState state) {
   	Queue<Pair<Integer,Integer>> q = new LinkedList<Pair<Integer,Integer>>();
   	Queue<Pair<Integer,Integer>> q2 = new LinkedList<Pair<Integer,Integer>>();
   	List<Pair<Integer,Integer>> visited = new ArrayList<Pair<Integer,Integer>>();
@@ -179,6 +179,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	  return maxIntOfArray(maxValuesFound) - (maxIntOfArray(maxValuesFoundForWhite));
   }
  
+
   /** 
 	* Computes the maximum number of an array of ints
 	* @param an array of ints
@@ -209,7 +210,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	* for states, is returned. 
 	*/
   public int minValue() {
-  	return -14;
+  	return 0;
   }
     
   /** 
@@ -226,5 +227,6 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
   public int maxValue() {
   	return 7;
   }
+
 
 }

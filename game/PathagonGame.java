@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 public class PathagonGame {
@@ -55,7 +54,7 @@ public class PathagonGame {
 				System.out.println("");
 				System.out.println("MOVISTE:");
 
-				if (!movePlayer(row,column)) {
+				if (!movePlayer(row-1,column-1)) {
 					System.out.println("NO TIENES FICHAS, SE SALTA TU TURNO");
 				}
 				System.out.println(this.state.toString());

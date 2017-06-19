@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 public class PathagonState implements AdversarySearchState {
@@ -401,8 +400,20 @@ public class PathagonState implements AdversarySearchState {
     result.append("\n");
     result.append("       WHITE       ");
     result.append("\n");
+    for (int k=0; k<8; k++){
+    	if(k==0){
+    		result.append(k);
+    	}
+    	else{
+    		result.append(" " + k + " ");
+    	}
+    }
+    result.append("\n");
     for (int i = 0; i < 7; i++) {
       for(int j = 0; j < 7; j++){
+      	if(j==0){
+      		result.append(i+1 + " ");
+      	} 	
       	if(board[i][j] == 1) {
           result.append("W");          
         }
@@ -431,4 +442,21 @@ public class PathagonState implements AdversarySearchState {
     result.append("------------------------------------------------------------------------------");
     return result.toString();
 	}
+
+	/**
+	* Returns an object representing the rule applied, leading to the
+	* current state. 
+	* @return an object representing the rule applied, leading to the
+	* current state. If the state is the initial state, then null is 
+	* returned.
+	* @pre. true.
+	* @post. An object representing the rule applied, leading to the
+	* current state, is returned. If the state is the initial state, 
+	* then null is returned.
+	* TODO Replace Object by a more specific class or interface.
+	*/
+	public Object ruleApplied() {
+		return new Object();
+	}
+
 }
