@@ -336,7 +336,6 @@ public class PathagonState implements AdversarySearchState {
 		}
 		return adjacents;
   }
-
 	
 	/** 
 	* Indicates whether the current state is a max state or not.
@@ -349,6 +348,18 @@ public class PathagonState implements AdversarySearchState {
 	public boolean isMax(){
 		return this.max;
 	}
+
+
+
+	public void setMax(boolean max){
+		this.max = max;
+	}
+
+	public boolean getMax(){
+		return this.max;
+	}
+
+
 
 	/** 
 	* Checks whether 'this' is equal to another state. 

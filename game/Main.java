@@ -7,7 +7,16 @@ public class Main {
 
 
 	public static void main(String[] args) {
-		Random r = new Random();
+		PathagonGame game = new PathagonGame(0);
+		game.startGame();
+	}
+}		
+
+
+
+
+
+/*
 		PathagonState state = new PathagonState();
 		PathagonSearchProblem p = new PathagonSearchProblem();
 		MinMaxAlphaBetaEngine<PathagonSearchProblem,PathagonState> engine = new MinMaxAlphaBetaEngine<PathagonSearchProblem,PathagonState>(p,4);
@@ -64,6 +73,4 @@ public class Main {
 		
 
 
-
-	}
-}
+	*/
