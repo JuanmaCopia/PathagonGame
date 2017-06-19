@@ -39,18 +39,4 @@ public interface AdversarySearchState {
 	 */
 	abstract public String toString();
 
-	/** 
-	 * Returns an object representing the rule applied, leading to the
-	 * current state. 
-	 * @return an object representing the rule applied, leading to the
-	 * current state. If the state is the initial state, then null is 
-	 * returned.
-	 * @pre. true.
-	 * @post. An object representing the rule applied, leading to the
-	 * current state, is returned. If the state is the initial state, 
-	 * then null is returned.
-	 * TODO Replace Object by a more specific class or interface.
-	 */
-	abstract Object ruleApplied();
-	
 }

@@ -349,17 +349,25 @@ public class PathagonState implements AdversarySearchState {
 		return this.max;
 	}
 
-
-
+	/**
+	* sets the value of the max atribute in the curren state.
+	* @pre. this != null.
+	* @param. max is the new value.
+	* @post. the value of this.max is equal to the max param.
+	*/		
 	public void setMax(boolean max){
 		this.max = max;
 	}
 
-	public boolean getMax(){
-		return this.max;
+	/**
+	* returns the value of the whitePiece atribute, it is an int that represent the pieces of the white player
+	* @pre. this != null.
+	* @return. the value of whitePiece
+	* @post. the value of whitePiece is returned
+	*/	
+	public int getWhitePiece() {
+		return this.whitePiece;
 	}
-
-
 
 	/** 
 	* Checks whether 'this' is equal to another state. 
@@ -423,21 +431,4 @@ public class PathagonState implements AdversarySearchState {
     result.append("------------------------------------------------------------------------------");
     return result.toString();
 	}
-
-	/**
-	* Returns an object representing the rule applied, leading to the
-	* current state. 
-	* @return an object representing the rule applied, leading to the
-	* current state. If the state is the initial state, then null is 
-	* returned.
-	* @pre. true.
-	* @post. An object representing the rule applied, leading to the
-	* current state, is returned. If the state is the initial state, 
-	* then null is returned.
-	* TODO Replace Object by a more specific class or interface.
-	*/
-	public Object ruleApplied() {
-		return new Object();
-	}
-
 }

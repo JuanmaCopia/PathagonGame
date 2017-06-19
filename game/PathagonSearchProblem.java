@@ -96,6 +96,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
   	Pair<Integer,Integer> p;
   	int k = 0;
   	int blackPiece = state.getBlackPiece();
+  	int whitePiece = state.getWhitePiece();
   	int min = 8;
 	  for (int j= 0; j<7 ; j++) {
 	  	for (int i = 0; i<7 ; i++) {
@@ -135,10 +136,49 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	  	maxCurrentColumnReached = -1;
 	  	aux = -1;  		
 	  }
-	  return maxIntOfArray(maxValuesFound);
+	  k= 0;
+	  visited = new ArrayList<Pair<Integer,Integer>>();
+	  for (int i= 0; i<7 ; i++) {
+	  	for (int j = 0; j<7 ; j++) {
+	  		if (state.getBoardSquareValue(i,j) == whitePiece) {
+	  			p = new Pair<Integer,Integer>(i,j);
+					q.add(p);
+	  		}
+	  	}
+	  }
+	  int maxCurrentRowReached = -1;
+  	int[] maxValuesFoundForWhite = new int[16];
+  	aux = -1;
+		while (!q.isEmpty()) {
+			q2.add(q.poll());
+			while (!q2.isEmpty()) {
+				p = q2.poll();
+				visited.add(p);
+				aux = p.getFirst();
+				if (aux<min) {
+	  			min = aux;
+	  		}
+				if (aux > maxCurrentRowReached) {
+					maxCurrentRowReached = aux;
+				}
+				adjacents = new LinkedList<Pair<Integer,Integer>>();
+				adjacents = state.getAdjacents(p,whitePiece);
+				for (Pair<Integer,Integer> pair: adjacents) {
+					if (!visited.contains(pair) && !q2.contains(pair)) {
+						visited.add(pair);
+						q2.add(pair);
+					}
+				}			
+			}
+			maxValuesFoundForWhite[k] = maxCurrentRowReached - min;
+			k++;
+			min = 8;
+	  	maxCurrentRowReached = -1;
+	  	aux = -1;  		
+	  }
+	  return maxIntOfArray(maxValuesFound) - (maxIntOfArray(maxValuesFoundForWhite));
   }
  
-
   /** 
 	* Computes the maximum number of an array of ints
 	* @param an array of ints
@@ -169,7 +209,7 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
 	* for states, is returned. 
 	*/
   public int minValue() {
-  	return 0;
+  	return -14;
   }
     
   /** 
@@ -186,6 +226,5 @@ public class PathagonSearchProblem implements AdversarySearchProblem<PathagonSta
   public int maxValue() {
   	return 7;
   }
-
 
 }

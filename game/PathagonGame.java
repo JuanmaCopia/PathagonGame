@@ -27,7 +27,7 @@ public class PathagonGame {
 			return true;
 		}
 		else {
-			this.state.setMax(!this.state.getMax());
+			this.state.setMax(!this.state.isMax());
 			return false;
 		}	
 	}
