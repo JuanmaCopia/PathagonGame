@@ -176,7 +176,7 @@ public int value(PathagonState state) {
 	  	maxCurrentRowReached = -1;
 	  	aux = -1;  		
 	  }
-	  return maxIntOfArray(maxValuesFound) - (maxIntOfArray(maxValuesFoundForWhite));
+	  return maxIntOfArray(maxValuesFound) - (maxIntOfArray(maxValuesFoundForWhite)*2);
   }
  
 
@@ -210,7 +210,7 @@ public int value(PathagonState state) {
 	* for states, is returned. 
 	*/
   public int minValue() {
-  	return 0;
+  	return -14;
   }
     
   /** 
