@@ -39,30 +39,36 @@ public class PathagonGame {
 					do{
 						System.out.println("");
 						System.out.print("fila: ");
-						row = entrada.nextInt();
+						row = entrada.nextInt() -1;
 						System.out.print("columna: ");
-						column = entrada.nextInt();
+						column = entrada.nextInt() -1;
 						System.out.println("");
 						System.out.println("");
-						if (row<1 || row>7 || column<1 || column>7	){
-							System.out.println("LA POSICION NO ES VALIDA.");
+						if (row<0 || row>6 || column<0 || column>6	){
+							System.out.println("ESA CASILLA NO EXISTE.");
 							System.out.println("TANTO LA FILA COMO LA COLUMNA DEBE SER UN VALOR ENTRE 1 Y 7.");
 							System.out.println("INGRESE NUEVAMENTE...");
 							ok=false;
 						}
 						else{
-							if (state.getBoardSquareValue(row-1,column-1)!=0){
-								System.out.println("YA HAY UNA FICHA EN ESA POSICION. INGRESE NUEVAMENTE...");
+							if (!state.emptySquare(row,column)){
+								System.out.println("YA HAY UNA FICHA EN ESA CASILLA. INGRESE NUEVAMENTE...");
 								ok=false;
 							}
 							else{
-								this.state.putPieceIn(row-1,column-1);
-								System.out.println("MOVISTE:");
-								System.out.println(this.state.toString());
-								ok=true;
+								if (state.blockedSquare(row,column)){
+									System.out.println("ESA CASILLA ESTA BLOQUEADA. INGRESE NUEVAMENTE...");
+									ok=false;
+								}
+								else {
+									this.state.putPieceIn(row,column);
+									System.out.println("MOVISTE:");
+									System.out.println(this.state.toString());
+									ok=true;
+								}
 							}
 						}
-					}while(ok==false);
+					}while(!ok);
 				}
 				else{
 					this.state.setMax(!this.state.isMax());
@@ -83,7 +89,5 @@ public class PathagonGame {
 				System.out.println("EMPATE");
 			}
 		}
-        //entrada.close();
 	}
-
 }
