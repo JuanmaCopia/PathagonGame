@@ -9,8 +9,6 @@ public class PathagonState implements AdversarySearchState {
 	private PathagonState parent;
 	private int whitePiece, blackPiece;
 
-
-
 	//Constructor of the class.
 	public PathagonState(){
 		board = new int [7] [7];
@@ -23,10 +21,11 @@ public class PathagonState implements AdversarySearchState {
 	}
 
 	/**
-   	* @pre. this != null
-   	* @param. a State
-   	* @pos. a copy of the current state with the iverted turn.
-   	*/	
+	* returns a new child of the "this" state with the turn inverted.
+	* @pre. this != null.
+	* @return. a child of the this state with the turn inverted.
+	* @post. the child should be equal to "this" in all the atributes exept in "max".
+	*/			
 	public PathagonState pathagonStateChild(){
 		PathagonState copy = new PathagonState();
 		copy.whites = this.whites;
@@ -35,7 +34,6 @@ public class PathagonState implements AdversarySearchState {
 		copy.max = !this.max;
 		copy.whitePiece = this.whitePiece;
 		copy.blackPiece = this.blackPiece;
-
 		for(int i=0; i<7; i++){
 			for(int j=0; j<7 ;j++){
 				copy.board [i][j] = this.board[i][j];
@@ -44,12 +42,12 @@ public class PathagonState implements AdversarySearchState {
 		return copy;
 	}
 
-
 	/**
-   	* @pre. this != null
-   	* @param. a State
-   	* @pos. 
-   	*/	
+	* returns a new clone of the "this" state.
+	* @pre. this != null.
+	* @return. a clon of the this state.
+	* @post. the clon should be equal to "this".
+	*/	
 	public PathagonState pathagonStateClone(){
 		PathagonState copy = new PathagonState();
 		copy.whites = this.whites;
@@ -58,7 +56,6 @@ public class PathagonState implements AdversarySearchState {
 		copy.max = this.max;
 		copy.whitePiece = this.whitePiece;
 		copy.blackPiece = this.blackPiece;
-
 		for(int i=0; i<7; i++){
 			for(int j=0; j<7 ;j++){
 				copy.board [i][j] = this.board[i][j];
@@ -66,26 +63,34 @@ public class PathagonState implements AdversarySearchState {
 		}
 		return copy;
 	}
-
 	
+	/** 
+	* unblock all the squares blocked of the board.
+	* @pre. this != null.
+	* @post. all previously blocked squares should be unblocked.
+	*/	
 	public void unblockAllSquares() {
 		for (int i= 0; i<7 ; i++) {
 			for (int j = 0; j<7 ; j++) {
-			    if (this.blockedSquare(i,j)) {
-			    	this.unblockSquare(i,j);
-			    }
+			  if (this.blockedSquare(i,j)) {
+	      	this.unblockSquare(i,j);
+			  }
 			}
 		}
 	}
 
-
-
-
 	/**
-	 * @pre. this != null
-	 * @param. indices de la casilla
-	 * @pos. El estado correspondiente despues de haber insertado la ficha en esa casilla
-	 */	
+	* sets a player piece (depending who's turn is, can be a black piece or a white one) 
+	* in the specified square of the board, and checks if this move capture a opponent piece
+	* or not, if it does, the square is blocked. it also has the responsability of decrease
+	* and increase the quantity of pieces as necessary, unblock previous blocked squares and shift 
+	* the turn of the state.
+	* @pre. this != null, the position (i,j) of the board should exist, be empty and not blocked.
+	* @param. i is the row number and j is the column number.
+	* @post. the "this" state should be consistent after the insertion, that is that the number of pieces
+	* from both player are correct, the turn has shifted and if there was a previous blocked square, now is 
+	* unblocked.
+	*/	
 	public void putPieceIn(int i, int j) {
   	int myPiece, adversaryPiece;
   	if (max) {
@@ -98,11 +103,8 @@ public class PathagonState implements AdversarySearchState {
   		adversaryPiece = blackPiece;
   		whites--;
   	}
-  	// pongo la ficha 
   	board [i][j] = myPiece;
-  	unblockAllSquares();
-  	this.max = !this.max;
-  	// chequeos verticales hacia arriba
+  	unblockAllSquares(); 	
   	if (i-1 > 0) {
   		if (board[i-1][j] == adversaryPiece) {
   			if (board[i-2][j] == myPiece) {
@@ -114,7 +116,6 @@ public class PathagonState implements AdversarySearchState {
   			}
   		}
   	}
-  	// chequeo vertical hacia abajo
   	if (i+1 < 6) {
   		if (board[i+1][j] == adversaryPiece) {
   			if (board[i+2][j] == myPiece) {
@@ -126,7 +127,6 @@ public class PathagonState implements AdversarySearchState {
   			}
   		}
   	}
-  	// chequeo horizontal hacia la izquierda
   	if (j-1 > 0) {
   		if (board[i][j-1] == adversaryPiece) {
   			if (board[i][j-2] == myPiece) {
@@ -138,7 +138,6 @@ public class PathagonState implements AdversarySearchState {
   			}
   		}
   	}
-  	// chequeo horizontal hacia la derecha
   	if (j+1 < 6) {
   		if (board[i][j+1] == adversaryPiece) {
   			if (board[i][j+2] == myPiece) {
@@ -150,162 +149,98 @@ public class PathagonState implements AdversarySearchState {
   			}
   		}
   	}
+  	this.max = !this.max;
   }
 
   /**
-   * @pre. this != null
-   * @param. indices
-   * @pos. true si la casilla (i,j) del tablero esta vacia, false caso contrario
-   */	
+  * check if a square is empty or not (if there is a piece in or not).
+	* @pre. this != null, the position (i,j) of the board should exist.
+	* @param. i is the row number and j is the column number.
+	* @return. true iff the square at (i,j) is empty. 
+	* @post. true is returned iff the square at (i,j) is empty.
+	*/	
   public boolean emptySquare(int i, int j) {
   	return (this.board[i][j] <= 0);
   }
 
   /**
-   * @pre. this != null
-   * @param. a State
-   * @pos. false si la casilla (i,j) del tablero esta bloqueada, false caso contrario
-   */	
+  * check if a square is blocked or not.
+	* @pre. this != null, the position (i,j) of the board should exist.
+	* @param. i is the row number and j is the column number.
+	* @return. true iff the square at (i,j) is blocked. 
+	* @post. true is returned iff the square at (i,j) is blocked.
+	*/	
   public boolean blockedSquare(int i,int j) {
   	return (this.board[i][j] == -1);
   }
 
   /**
-   * @pre. this != null
-   * @param. a State
-   * @pos. casilla desbloqueada
-   */	
+  * unblocks a given square of the board.
+	* @pre. this != null, the position (i,j) of the board should exist.
+	* @param. i is the row number and j is the column number.
+	* @post. the square at row i and column j is unblocked.
+	*/	
   public void unblockSquare(int i,int j) {
   	this.board[i][j] = 0;
   }
 
-
 	/**
-	 * @pre. this != null
-	 * @param. a State
-	 * @pos. numer of blancas
-	 */	
+	* returns the quantity of white pieces.
+	* @pre. this != null.
+	* @return. the quantity of white pieces of this state.
+	* @post.  the quantity of white pieces is returned
+	*/	
 	public int getWhites(){
 		return this.whites;
 	}
 
 	/**
-	 * @pre. this != null
-	 * @param. a State
-	 * @pos. numer of negras
-	 */	
+	* returns the quantity of black pieces.
+	* @pre. this != null.
+	* @return. the quantity of black pieces of this state.
+	* @post.  the quantity of black pieces is returned
+	*/		
 	public int getBlacks(){
 	  return this.blacks;
 	}
 
 	/**
-	 * @pre. this != null
-	 * @param. a State
-	 * @pos. numer of negras
-	 */	
-	public PathagonState getParent(){
-	  return this.parent;
+	* sets the value of the square in a given position.
+	* @pre. this != null,  position (i,j) of the board should exist.
+	* @param. i is the row number and j is the column number, and value is the new value.
+	* @post. the value of the square (i.j) is equal to value.
+	*/		
+	public void setBoardSquareValue(int i, int j, int value) {
+		this.board[i][j] = value;
 	}
 
 	/**
-	 * @pre. this != null
-	 * @param. a State
-	 * @pos. numer of negras
-	 */	
-	public void setParent(PathagonState parent){
-	  this.parent = parent;
-	}
-
-
-	/**
-	 * @pre. this != null
-	 * @param. a State
-	 * @pos. numer of negras
-	 */	
-	public void setMax(boolean max){
-	  this.max = max;
-	}
-
-
-	/**
-	 * @pre. this != null
-	 * @param. a State
-	 * @pos. numer of negras
-	 */	
-	public boolean getMax(){
-	  return this.max;
-	}
-
-	/**
-	 * @pre. true
-	 * @param. numer of white pieces
-	 * @pos. number of wihite pieces updated
-	 */	
-	public void setWhites(int n_whites){
-	  this.whites = n_whites;
-	}
-
-	/**
-	 * @pre. true
-	 * @param. numer of black pieces
-	 * @pos. number of black pieces updated
-	 */	
-	public void setBlacks(int n_blacks){
-	  this.blacks = n_blacks;
-	}
-
-
-	/**
-	 * @pre. this != null
-	 * @param. i,j: Piece position, param: value of original board on [i][j] position
-	 * @pos. board of copy updated.
-	 */	
-	public void setBoard(int i, int j, int param){
-		this.board[i][j] = param;
-	}
-
-	/**
-	 * @pre. this != null
-	 * @param. 
-	 * @pos. 
-	 */	
-	public int getBoard(int i, int j){
+	* returns the value of the square at the row i and the at column j of the board.
+	* @pre. this != null,  position (i,j) of the board should exist.
+	* @param. i is the row number and j is the column number.
+	* @return. the value of the square (i,j) of the board.
+	* @post. the value of position (i,j) of the board is returned.
+	*/	
+	public int getBoardSquareValue(int i, int j) {
 		return this.board[i][j];
 	}
 	
-
-
 	/**
-	 * @pre. this != null
-	 * @param. 
-	 * @pos. 
-	 */	
-	public int getBlackPiece(){
+	* returns the value of the blackPiece atribute, it is an int that represent the pieces of the black player
+	* @pre. this != null.
+	* @return. the value of blackPiece
+	* @post. the value of blackPiece is returned
+	*/	
+	public int getBlackPiece() {
 		return this.blackPiece;
 	}
 
 	/**
-	 * @pre. this != null
-	 * @param. 
-	 * @pos.
-	 * @return. la posicion de la ficha negra mas cercana al lado izquierdo del tablero  
-	 */	
-	public Pair<Integer,Integer> foundFirstBlackPiece() {
-		for (int j= 0; j<7 ; j++) {
-	    	for (int i = 0; i<7 ; i++) {
-	    		if (board[i][j] == blackPiece) {
-	    			return new Pair<Integer,Integer>(i,j);
-	    		}
-	    	}
-	    }
-	    return null;
-	}
-
-	/**
-	 * @pre. 
-	 *	@param 
-	 *	@pos. True si existe un camino del jugador blanco que conecta sus 2 extremos del tablero, false caso contrario
-	 */
+  * check if the white player has won or not. that is if exist a path of white pieces that conects both white sides.
+	* @pre. this != null.
+	* @return. true iff white player has won.
+	* @post. true is returned iff the white player has won .
+	*/	
   public boolean whiteWins() {
   	Queue<Pair<Integer,Integer>> q = new LinkedList<Pair<Integer,Integer>>();
   	int i = 0;
@@ -337,10 +272,11 @@ public class PathagonState implements AdversarySearchState {
   }
 
   /**
-	 * @pre. 
-	 *	@param 
-	 *	@pos. True si existe un camino del jugador negro que conecta sus 2 extremos del tablero, false caso contrario
-	 */
+  * check if the black player has won or not. that is if exist a path of black Pieces that conects both black sides.
+	* @pre. this != null.
+	* @return. true iff black player has won.
+	* @post. true is returned iff the black player has won .
+	*/		
  	public boolean blackWins() {
   	Queue<Pair<Integer,Integer>> q = new LinkedList<Pair<Integer,Integer>>();
   	int i = 0;
@@ -372,30 +308,28 @@ public class PathagonState implements AdversarySearchState {
   }
 
   /**
-	 * @pre. 
-	 *	@param Un par que representa una casilla del tablero, un int que es el "color" de ficha que usa el jugador
-	 *	@pos. Devuelve la lista de pares con aquellos pares que son adjacentes al recibido y que ademas tienen una ficha del mismo color que el jugador
-	 */
-	public List<Pair<Integer,Integer>> getAdjacents(Pair<Integer,Integer> p, int playerPiece) {		
+  * computes the adjacents positions of a given position (square) of the board, represented as pairs of Integers.
+	* @pre. this != null, p != null, p should be a existent position of the board.
+	* @param.	position is a pair representing the postion of the board for which its adjacents positions are being computed.
+	* @return. a list of pairs representing the adjacent positions.
+	* @post. the list of the adjacent postions is returned. 
+	*/	
+	public List<Pair<Integer,Integer>> getAdjacents(Pair<Integer,Integer> position, int playerPiece) {		
 		List<Pair<Integer,Integer>> adjacents = new LinkedList<Pair<Integer,Integer>>();
-		Integer row = p.getFirst();
-		Integer column = p.getSecond();
-		// obtengo el par adyacente vertical de arriba
+		Integer row = position.getFirst();
+		Integer column = position.getSecond();
 		if (row != 0) {
 			if (board[row-1][column] == playerPiece) 
 				adjacents.add(new Pair<Integer,Integer>(row-1,column));	
 		}
-		// obtengo el par adyacente vertical de abajo
 		if (row != 6) {
 			if (board[row+1][column] == playerPiece) 
 				adjacents.add(new Pair<Integer,Integer>(row+1,column));
 		}
-		// obtengo el par adyacente horizontal de la izquierda
 		if (column != 0) {
 			if (board[row][column-1] == playerPiece) 
 				adjacents.add(new Pair<Integer,Integer>(row,column-1));
 		}
-		// obtengo el par adyacente horizontal de la derecha
 		if (column != 6) {
 			if (board[row][column+1] == playerPiece) 
 				adjacents.add(new Pair<Integer,Integer>(row,column+1));
@@ -404,20 +338,26 @@ public class PathagonState implements AdversarySearchState {
   }
 
 	
-	/**
-	 * @pre. true
-	 * @param. a State
-	 * @pos. True sii is a max state.
-	 */
+	/** 
+	* Indicates whether the current state is a max state or not.
+	* If the current state is not a 'max' state, then it is assumed
+	* to be a min state. 
+	* @return true iff 'this' is a max state.
+	* @pre. true.
+	* @post. true is returned iff 'this' is a max state.
+	*/
 	public boolean isMax(){
 		return this.max;
 	}
 
-	/**
-	 * @pre. S != null & this != null
-	 *	@param a State
-	 *	@pos. true sii this equals S
-	 */
+	/** 
+	* Checks whether 'this' is equal to another state. 
+	* @param other is the state to compare 'this' to.
+	* @return true iff 'this' is equal, as a state, to 'other'.
+	* @pre. other!=null.
+	* @post. true is returned iff 'this' is equal, as a state, 
+	* to 'other'.
+	*/	
 	public boolean equals(AdversarySearchState s){
 		PathagonState state = (PathagonState) s;
 		for(int i=0; i<7 ;i++){
@@ -430,48 +370,39 @@ public class PathagonState implements AdversarySearchState {
 		return true;
 	}
 
-
-	
-	/**
-	* @pre. S != null & this != null
-	*	@param a State
-	*	@pos. true sii this equals S
+	/** 
+	* Returns a representation as a string of the current state. 
+	* @return a string representing the current state.
+	* @pre. true.
+	* @post. A text representation of the current state is returned.
 	*/
-	/*
 	public String toString() {
-
-    	String str = "";
-
-    	for (int i = 0 ; i<7 ; i ++ ){
-    	    for (int j = 0 ; j < 7 ; j++){
-    	        str += board[i][j]+"\t";
-    	    }
-    	    str += "\n";
-    	}
-   		return str;
-	}
-	
-	*/
-
-	public String toString() {
-
-
-    String separator = ", ";
+    String separator = "  ";
     StringBuffer result = new StringBuffer();
     result.append("\n");
-
-    // iterate over the first dimension
+    result.append("       WHITE       ");
+    result.append("\n");
     for (int i = 0; i < 7; i++) {
-        // iterate over the second dimension
-        for(int j = 0; j < 7; j++){
-            result.append(board[i][j]);
-            result.append(separator);
+      for(int j = 0; j < 7; j++){
+      	if(board[i][j] == 1) {
+          result.append("W");          
         }
-        // remove the last separator
-        result.setLength(result.length() - separator.length());
-        // add a line break.
-        result.append("\n");  
+        if(board[i][j] == 2) {
+          result.append("B");          
+        }
+        if(board[i][j] == 0) {
+          result.append("_");          
+        }
+        if(board[i][j] == -1) {
+          result.append("~");          
+        }
+        result.append(separator);
+      }
+      result.setLength(result.length() - separator.length());
+      result.append("\n");  
     }
+    result.append("       WHITE       ");
+    result.append("\n");
     result.append("\n");
     result.append("CANTIDAD DE FICHAS BLANCAS: "+this.whites);
     result.append("\n");
@@ -482,77 +413,20 @@ public class PathagonState implements AdversarySearchState {
     return result.toString();
 	}
 
+	/**
+	* Returns an object representing the rule applied, leading to the
+	* current state. 
+	* @return an object representing the rule applied, leading to the
+	* current state. If the state is the initial state, then null is 
+	* returned.
+	* @pre. true.
+	* @post. An object representing the rule applied, leading to the
+	* current state, is returned. If the state is the initial state, 
+	* then null is returned.
+	* TODO Replace Object by a more specific class or interface.
+	*/
 	public Object ruleApplied() {
 		return new Object();
 	}
 
-/*
-	public static void main(String[] args) {
-
-		PathagonState state = new PathagonState();
-
-		state.board[0][6] = state.whitePiece;
-		state.board[1][6] = state.whitePiece;
-		state.board[2][6] = state.whitePiece;
-		state.board[3][6] = state.whitePiece;
-		state.board[4][6] = state.whitePiece;
-		state.board[5][6] = state.whitePiece;
-		state.board[6][6] = state.whitePiece;
-
-
-
-		state.board[1][0] = state.blackPiece;
-		state.board[1][1] = state.blackPiece;
-		state.board[1][2] = state.blackPiece;
-		state.board[2][2] = state.blackPiece;
-		state.board[2][3] = state.blackPiece;
-		state.board[2][4] = state.blackPiece;
-
-		if (state.whiteWins()) {
-			System.out.println("El jugador blanco gano");
-		}
-		else {
-			System.out.println("NO GANO BLANCO TODAVIA");
-		}
-
-		System.out.println("-------------------------------------------------");
-		System.out.println("-------------------------------------------------");
-		PathagonSearchProblem p = new PathagonSearchProblem();
-		System.out.println("");
-		System.out.println("El valor de este estado es: "+p.value(state)+" Deberia ser 5");
-		System.out.println("");
-		System.out.println("-------------------------------------------------");
-		System.out.println("-------------------------------------------------");
-
-		PathagonState state2 = new PathagonState();
-
-		state2.board[1][0] = state2.blackPiece;
-		state2.board[1][1] = state2.blackPiece;
-		state2.board[1][2] = state2.blackPiece;
-		state2.board[2][2] = state2.blackPiece;
-		state2.board[2][3] = state2.blackPiece;
-		state2.board[2][4] = state2.blackPiece;
-		state2.board[1][4] = state2.blackPiece;
-		state2.board[1][5] = state2.blackPiece;
-		state2.board[1][6] = state2.blackPiece;
-
-		if (state2.blackWins()) {
-			System.out.println("El jugador negro gano");
-		}
-		else {
-			System.out.println("NO GANO NEGRO TODAVIA");
-		}
-
-		System.out.println("-------------------------------------------------");
-		System.out.println("-------------------------------------------------");
-		System.out.println("");
-		System.out.println("El valor de este estado es: "+p.value(state2)+" Deberia ser 7");
-		System.out.println("");
-		System.out.println("-------------------------------------------------");
-		System.out.println("-------------------------------------------------");
-	
-	}
-
-
-*/
 }

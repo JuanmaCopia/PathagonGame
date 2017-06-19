@@ -17,9 +17,9 @@ public class Main {
 		System.out.println("ESTADO INICIAL:");
 		System.out.println(state.toString());
 		while (!p.end(state)) {
-			if (state.isMax()) {
-				System.out.println("MOVIO NEGRAS:");			
+			if (state.isMax()) {					
 				state = engine.computeSuccessor(state);
+				System.out.println("MOVIO NEGRAS:");
 				System.out.println(state.toString());
 
 			}
@@ -27,7 +27,8 @@ public class Main {
 				
 				PathagonState child = state.pathagonStateClone();
 				if (child.getWhites() != 0) {
-					System.out.println("Ingrese su Movimiento: ");
+					System.out.println("SU TURNO: ");
+					System.out.println("");
 					System.out.print("fila: ");
 					a = entrada.nextInt();
 					System.out.print("columna: ");
