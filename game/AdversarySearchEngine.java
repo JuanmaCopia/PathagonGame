@@ -1,4 +1,10 @@
-
+/**
+ * Title:        AdversarySearchEngine<p>
+ * Description:  Interface which defines the basic elements of a search engine needed when characterising problems as adversary search problems<p>         
+ * Company:      UNRC<p>
+ * @author 		 Juan Manuel Copia, Gabriel Gonzalez, Sebastian Fischer.
+ * @version 0.1
+ */
 public abstract class AdversarySearchEngine<P extends AdversarySearchProblem<State>, State extends AdversarySearchState> {
 
     
