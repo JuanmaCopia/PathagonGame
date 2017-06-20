@@ -1,3 +1,10 @@
+/**
+ * Title:        PhatagonSearchProblem<p>
+ * Description:  Class which implements the Phatagon Game<p>         
+ * Company:      UNRC<p>
+ * @author Juan Manuel Copia, Sebastian Fischer, Gabriel Gonzalez.
+ * @version 0.1
+ */
 
 import java.util.*;
 

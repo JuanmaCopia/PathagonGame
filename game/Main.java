@@ -1,3 +1,11 @@
+/**
+ * Title:        Main Class<p>
+ * Description:  The Main class, where we play the game<p>         
+ * Company:      UNRC<p>
+ * @author Juan Manuel Copia, Sebastian Fischer, Gabriel Gonzalez.
+ * @version 0.1
+ */
+
 import java.util.*;
 
 public class Main {

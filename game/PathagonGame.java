@@ -1,3 +1,10 @@
+/**
+ * Title:        PhatagonGame<p>
+ * Description:  Start a game, show the board<p>         
+ * Company:      UNRC<p>
+ * @author Juan Manuel Copia, Sebastian Fischer, Gabriel Gonzalez.
+ * @version 0.1
+ */
 
 import java.util.*;
 
