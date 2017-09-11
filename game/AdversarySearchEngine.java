@@ -5,6 +5,7 @@
  * @author 		 Juan Manuel Copia, Gabriel Gonzalez, Sebastian Fischer.
  * @version 0.1
  */
+
 public abstract class AdversarySearchEngine<P extends AdversarySearchProblem<State>, State extends AdversarySearchState> {
 
     

@@ -1,6 +1,6 @@
 /**
  * Title:        PhatagonState<p>
- * Description:  Class which implements a State of the game<p>         
+ * Description:  Class which implements AdversarySearchState interface.<p>         
  * Company:      UNRC<p>
  * @author Juan Manuel Copia, Sebastian Fischer, Gabriel Gonzalez.
  * @version 0.1
